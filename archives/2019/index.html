@@ -74,27 +74,27 @@
     <div class="columns">
         <div class="column two-thirds">
             
-                  <article id="post-用Scrapy做个简单的爬虫" class="repo-list">
-    <div class="repo-list-item" >
-      <h3 class="repo-list-name" itemprop="name">
-        
+                <article id="post-用Scrapy做个简单的爬虫" class="repo-list">
+    <div class="repo-list-item">
+        <h3 class="repo-list-name" itemprop="name">
+            
   
       <a class="article-title" href="/2019/01/16/用Scrapy做个简单的爬虫/">用Scrapy做个简单的爬虫</a>
   
 
-      </h3>
-      <div class="repo-list-description">
-        
-          <h4 id="Scrapy文档"><a href="#Scrapy文档" class="headerlink" title="Scrapy文档"></a>Scrapy文档</h4><p>官网<br><a href="https://scrapy.org/" target="_blank" rel="external">https://scrapy.org/</a></p>
-<p>英文文档 <em>（版本较新）</em><br><a href="https://doc.scrapy.org/en/latest/" target="_blank" rel="external">https://doc.scrapy.org/en/latest/</a></p>
-<p>中文文档 <em>（版本比英文版滞后）</em><br><a href="https://scrapy-chs.readthedocs.io/zh_CN/0.24/index.html" target="_blank" rel="external">https://scrapy-chs.readthedocs.io/zh_CN/0.24/index.html</a></p>
-<h4 id="我的环境："><a href="#我的环境：" class="headerlink" title="我的环境："></a>我的环境：</h4><ul>
+        </h3>
+        <div class="repo-list-description">
+            
+            <h3 id="Scrapy文档"><a href="#Scrapy文档" class="headerlink" title="Scrapy文档"></a>Scrapy文档</h3><p>官网<br><a href="https://scrapy.org/">https://scrapy.org/</a></p>
+<p>英文文档 <em>（版本较新）</em><br><a href="https://doc.scrapy.org/en/latest/">https://doc.scrapy.org/en/latest/</a></p>
+<p>中文文档 <em>（版本比英文版滞后）</em><br><a href="https://scrapy-chs.readthedocs.io/zh_CN/0.24/index.html">https://scrapy-chs.readthedocs.io/zh_CN/0.24/index.html</a></p>
+<h3 id="我的环境："><a href="#我的环境：" class="headerlink" title="我的环境："></a>我的环境：</h3><ul>
 <li>python 3.6</li>
 <li>scrapy 1.5.1</li>
 </ul>
-<h4 id="安装Scrapy"><a href="#安装Scrapy" class="headerlink" title="安装Scrapy"></a>安装Scrapy</h4><pre><code class="python">pip3 install Scrapy
+<h3 id="安装Scrapy"><a href="#安装Scrapy" class="headerlink" title="安装Scrapy"></a>安装Scrapy</h3><pre><code class="python">pip3 install Scrapy
 </code></pre>
-<h4 id="创建Scrapy项目"><a href="#创建Scrapy项目" class="headerlink" title="创建Scrapy项目"></a>创建Scrapy项目</h4><pre><code class="python">scrapy startproject novel
+<h3 id="创建Scrapy项目"><a href="#创建Scrapy项目" class="headerlink" title="创建Scrapy项目"></a>创建Scrapy项目</h3><pre><code class="python">scrapy startproject novel
 </code></pre>
 <p><strong>将会生成如下项目结构目录</strong></p>
 <pre><code class="angular2html">novel/
@@ -108,104 +108,27 @@
             __init__.py
             ...
 </code></pre>
-<p><strong>这些文件分别是:</strong></p>
-<ul>
-<li><code>scrapy.cfg</code>: 项目的配置文件</li>
-<li><code>novel/</code>: 该项目的python模块。之后您将在此加入代码。</li>
-<li><code>novel/items.py</code>: 项目中的item文件.</li>
-<li><code>novel/pipelines.py</code>: 项目中的pipelines文件.</li>
-<li><code>novel/settings.py</code>: 项目的设置文件.</li>
-<li><code>novel/spiders/</code>: 放置spider代码的目录.</li>
-</ul>
-<p>以<a href="https://www.readnovel.com/free/all?pageSize=50&amp;pageNum=1" target="_blank" rel="external">小说阅读网</a>为例，爬取一些免费的小说信息<br><img src="/2019/01/16/用Scrapy做个简单的爬虫/1.png" alt="爬虫目标页面"></p>
-<p><strong>创建一个爬虫(爬虫名称可以自己取)</strong></p>
-<pre><code class="python"># scrapy genspider [爬虫名称] [域名]
-scrapy genspider readnovel readnovel.com
-</code></pre>
-<p><code>novel/spiders/readnovel</code>就是创建的爬虫文件</p>
-<ul>
-<li><code>name</code>: 用于区别Spider，该名字必须是唯一的</li>
-<li><code>start_urls</code>: 在启动时进行爬取的url列表</li>
-<li><code>parse()</code>: 是spider的一个方法。 被调用时，每个初始URL完成下载后生成的 <code>Response</code> 对象将会作为唯一的参数传递给该函数</li>
-</ul>
-<p><strong>编写爬虫代码</strong></p>
-<pre><code class="python"># coding:utf-8
-import scrapy
-import math
-from urllib import parse
-
-class ReadnovelSpider(scrapy.Spider):
-    # 爬虫名称
-    name = &quot;readnovel&quot;
-    # 允许抓取的域名地址
-    allow_url = [&#39;readnovel.com&#39;]
-    # 目标链接
-    start_urls = [&#39;https://www.readnovel.com/free/all?pageSize=50&amp;pageNum=1&#39;]
-
-    def parse(self, response):
-
-        # 获取列表信息
-        bookList = response.xpath(&#39;//div[@class=&quot;right-book-list&quot;]/ul/li&#39;)
-        for book in bookList:
-            item = {}   # 小说数据
-
-            # 书名
-            item[&#39;bookName&#39;] = book.xpath(&#39;.//div[@class=&quot;book-info&quot;]/h3/a/text()&#39;).extract_first()
-            # 作者
-            item[&#39;author&#39;] = book.xpath(&#39;.//div[@class=&quot;book-info&quot;]/h4/a[@class=&quot;default&quot;]/text()&#39;).extract_first()
-            # 小说图片
-            item[&#39;picture&#39;] = book.xpath(&#39;.//div[@class=&quot;book-img&quot;]/a/img/@src&#39;).extract_first()
-            # 小说介绍
-            item[&#39;intro&#39;] = book.xpath(&#39;.//div[@class=&quot;book-info&quot;]/p[@class=&quot;intro&quot;]/text()&#39;).extract_first()
-
-            yield item
-
-        # 记录当前页码
-        urlParams = parse.parse_qs(parse.urlparse(response.url).query)
-        currentPageNum = int(urlParams[&#39;pageNum&#39;][0])
-
-        # 获取翻页DOM
-        pages = response.xpath(&#39;//div[@id=&quot;page-container&quot;]&#39;)
-        for page in pages:         
-            # 数据总数          
-            dataTotal = int(page.xpath(&#39;./@data-total&#39;).extract_first())
-            # 每页返回数据数量
-            pageSize = int(page.xpath(&#39;./@data-size&#39;).extract_first())
-            # 计算数据页数
-            pageCount = math.ceil(dataTotal / pageSize)
-
-            if currentPageNum &lt;= pageCount:
-                # 添加下一页链接
-                nextURL = &#39;https://www.readnovel.com/free/all?pageSize=5&amp;pageNum={}&#39;.format(currentPageNum + 1)
-                print(&#39;next url:&#39;, nextURL)
-                yield response.follow(nextURL, callback=self.parse)
-</code></pre>
-<p>在项目目录下运行命令</p>
-<pre><code class="python">scrapy crawl readnovel -o rst.json
-</code></pre>
-<p><em>scrapy会把结果保存在novel/rst.json</em></p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>实际应用中不太会将爬取的数据全部以文件形式保存，一般会保存到数据库中，方便后续的数据处理</p>
-<p>大量爬取一个网站的时候可能会被网站屏蔽访问，所以需要对<code>user-agent</code>、<code>ip</code>等信息进行伪装</p>
-
-        
-      </div>
-      <p class="repo-list-meta">
+            <P>......</P>
+            <a href="/2019/01/16/用Scrapy做个简单的爬虫/#more"><em>【查看全文】</em></a>
+            
+        </div>
+        <p class="repo-list-meta">
         <span class="meta-info">
           <span class="octicon octicon-calendar"></span>
-           <time datetime="2019-01-15T18:59:24.000Z" itemprop="datePublished">2019-01-16</time>
+            <time datetime="2019-01-15T18:59:24.000Z" itemprop="datePublished">2019-01-16</time>
         </span>
 
-        
-      
-        <!--
+            
+
+            <!--
           
             <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-scrapy/">python, scrapy</a></li></ul>
           
         -->
 
-      </p>
+        </p>
     </div>
-  </article>
+</article>
             
         </div>
         <div class="column one-third">
