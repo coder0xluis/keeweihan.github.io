@@ -157,6 +157,7 @@ class ReadnovelSpider(scrapy.Spider):
 <pre><code class="bash">$ scrapy crawl readnovel -o rst.json
 </code></pre>
 <p><em>Scrapy会把结果保存到<code>novel/rst.json</code></em></p>
+<p><strong>内容如图</strong><br><img src="/2019/01/16/用Scrapy做个简单的爬虫/16.50.19.png" alt="http://qiweihan.com"></p>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>实际应用中不太会将爬取的数据全部以文件形式保存，一般会保存到数据库中，方便后续的数据处理</p>
 <p>大量爬取一个网站的时候可能会被网站屏蔽访问，所以需要对<code>user-agent</code>、<code>ip</code>等信息进行伪装</p>
 
