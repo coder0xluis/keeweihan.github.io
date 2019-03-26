@@ -70,8 +70,7 @@
 <p>然后开始排查这蛋疼的问题。<br>先是<code>ping</code>了ip地址，正常，看来没有被和谐。松一口气。</p>
 <p>网站也能正常访问，看来服务器也没崩。</p>
 <p>然后把家里的路由器重启了好几次，电脑也重启了N会，问题依旧。<br>但是很奇怪，通过服务商的面板可以登录服务器。 </p>
-<p>白天还带着电脑去咖啡厅，用咖啡厅的网络也无法正常登录服务器。</p>
-<p>绝望的时候看到一篇帖子，大概是说很多VPS服务器<code>ssh</code>默认<code>22端口</code>被封了。<br>原因你懂的，心中一万头羊驼咩咩叫啊～</p>
+<p>白天还带着电脑去咖啡厅，用咖啡厅的网络也无法正常登录服务器。<br><a id="more"></a><br>绝望的时候看到一篇帖子，大概是说很多VPS服务器<code>ssh</code>默认<code>22端口</code>被封了。<br>原因你懂的，心中一万头羊驼咩咩叫啊～</p>
 <p>既然惹不起，那就换端口吧。</p>
 <pre><code class="bash">$ sudo vi /etc/ssh/sshd_config
 </code></pre>
@@ -84,7 +83,7 @@
             
             <div class="share">
                 <!--开启分享-->
-<div class="share-component" data-disabled="google,twitter,facebook" data-description=""></div>
+<div class="share-component" data-disabled="google,twitter,facebook" data-description="本地管理服务器时，一般用ssh命令登录，简单粗暴直接了..."></div>
 
 <script src="/js/share.min.js"></script>
 
