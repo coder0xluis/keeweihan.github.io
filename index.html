@@ -74,6 +74,58 @@
     <div class="columns">
         <div class="column two-thirds">
             
+                <article id="post-解决服务器无法SSH登录的诡异问题" class="repo-list">
+    <div class="repo-list-item">
+        <h3 class="repo-list-name" itemprop="name">
+            
+  
+      <a class="article-title" href="/2019/03/26/解决服务器无法SSH登录的诡异问题/">解决VPS服务器无法SSH登录的诡异问题</a>
+  
+
+        </h3>
+        <div class="repo-list-description">
+            
+            <p>本地管理服务器时，一般用ssh命令登录，简单粗暴直接了当。</p>
+<pre><code class="angular2html">$ ssh username@ip
+</code></pre>
+<p>但昨晚突然发现本地ssh连接不上服务器了。返回22端口连接超时<br><img src="/2019/03/26/解决服务器无法SSH登录的诡异问题/2019-03-26 23.05.40.png" alt="port 22:Operation timed out"></p>
+<p>啥玩意？从来没遇见过，脑袋里闪出一堆问号！</p>
+<ul>
+<li>本地网络有问题？</li>
+<li>服务器ip被墙？</li>
+<li>服务器崩了？</li>
+</ul>
+<p>然后开始排查这蛋疼的问题。<br>先是<code>ping</code>了ip地址，正常，看来没有被和谐。松一口气。</p>
+<p>网站也能正常访问，看来服务器也没崩。</p>
+<p>然后把家里的路由器重启了好几次，电脑也重启了N会，问题依旧。<br>但是很奇怪，通过服务商的面板可以登录服务器。 </p>
+<p>白天还带着电脑去咖啡厅，用咖啡厅的网络也无法正常登录服务器。</p>
+<p>绝望的时候看到一篇帖子，大概是说很多VPS服务器<code>ssh</code>默认<code>22端口</code>被封了。<br>原因你懂的，心中一万头羊驼咩咩叫啊～</p>
+<p>既然惹不起，那就换端口吧。</p>
+<pre><code class="bash">$ sudo vi /etc/ssh/sshd_config
+</code></pre>
+<p>找到<code>Port 22</code> 修改成<code>Port 2222</code> ，然后重启ssh服务。</p>
+<pre><code class="bash">$ service sshd restart
+</code></pre>
+<p>最终成功ssh登陆VPS服务器。 </p>
+
+            
+        </div>
+        <p class="repo-list-meta">
+        <span class="meta-info">
+          <span class="octicon octicon-calendar"></span>
+            <time datetime="2019-03-26T14:59:48.000Z" itemprop="datePublished">2019-03-26</time>
+        </span>
+
+            
+
+            <!--
+          
+        -->
+
+        </p>
+    </div>
+</article>
+            
                 <article id="post-网站SEO之微数据" class="repo-list">
     <div class="repo-list-item">
         <h3 class="repo-list-name" itemprop="name">
@@ -87,8 +139,9 @@
             
             <ul>
 <li>结构化数据标记有三种标准：微数据、微格式、RDFa</li>
-<li>schema.org仅支持微数据<br>##微数据是什么？</li>
+<li>schema.org仅支持微数据</li>
 </ul>
+<p>##微数据是什么？<br><code>微数据</code>是一种标记网页内容的</p>
 <p>##微数据与SEO有什么关系？</p>
 <p>##微数据怎么用？</p>
 <p>微数据测试工具<br><a href="https://search.google.com/structured-data/testing-tool" target="_blank" rel="external">https://search.google.com/structured-data/testing-tool</a></p>
